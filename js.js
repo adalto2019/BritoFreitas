@@ -77,9 +77,9 @@ function getStreetInfo() {
         }
     });
 }
-function initMap(lat = -3.7975, lng = -38.5815) {
+function initMap(lat = -3.793790817260742, lng = -38.60097122192383) {
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 20, 
+        zoom: 15, 
         center: { lat: lat, lng: lng } 
     });
 

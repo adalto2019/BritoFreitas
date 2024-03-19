@@ -15,7 +15,7 @@ h1{text-align: center;
     margin-top: 25px;}
 
 /* Style the map container */
-#map {
+#map{
     height: 600px;
     width: 100%;
 }   
@@ -23,10 +23,10 @@ h1{text-align: center;
 h3{color: black;}
 
 #ModalCadastros{display: none; /*Iniciando com o modal fechado*/ 
-    position: fixed; /*Abrir modal sobreposto*/
-    width: 280px; height: 800px; padding-top: 50px; 
+    position: absolute; /*Abrir modal sobreposto*/
+    width: 390px; height: 250px; 
     background-color: black; opacity: .9;}
-    #BtnXModalMenu{margin: 0px 350px; background-color: black; opacity: 0.9; color: white; border-radius: 50%; padding: 10px;}/*Btn fechar 'X'*/
+    #BtnXModalMenu{margin: 0px 300px; background-color: rgb(250, 247, 247); opacity: 0.9; color: rgb(8, 7, 7); border-radius: 50%; padding: 10px;}/*Btn fechar 'X'*/
     
 #seleção:hover{background-color: aliceblue; color: black;}    
 
