@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brito Freitas</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <header>
+        <img id="icon" title="Acessar Menu" onclick="abrirModal()" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAfcLonu6EK4Goj7RWiFyFCJhQYmbQcH013w&usqp=CAU">
+            <div id="ModalCadastros">
+                <br/>
+                <span id="BtnXModalMenu" title="Fechar" onclick="fecharModal()">X</span>
+                <div id="cadastre_se"><b>Cadastros:</b></div><br/>
+                <hr><br/>
+                <div id="seleção"><b>APOIADORES</b></div><br/>
+                <div id="seleção"><b>COORDENADORES</b></div><br/>
+                <div id="seleção"><b>RELATÓRIOS</b></div><br/>
+            </div>   
+    </header>    
+        <hr>  
+        <h1>Brito Freitas</h1> 
+    </br>
+    <div id="containerPrincipal">
+        <div id="Map">
+            <span id="BtnXModalAnuncio" title="Fechar" onclick="fecharModalAnuncio()">X</span>
+            <div>
+                <img id="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMijBHN_SGES6A6u5oBd_pYtKwKSfBNAr5Ag&usqp=CAU"><br>
+                <img id="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMijBHN_SGES6A6u5oBd_pYtKwKSfBNAr5Ag&usqp=CAU"><br>
+                <img id="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMijBHN_SGES6A6u5oBd_pYtKwKSfBNAr5Ag&usqp=CAU"><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+        </div>
+        <h3>Panorama de Colaboradores</h4>
+            <div id="map" style="margin-top: 1rem;"></div>
+        <!--<div id="Box">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15924.256487007911!2d-38.6053128604784!3d-3.7961967036041404!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c74d00ae0e829b%3A0x22e474492fa0912b!2sBom%20Jardim%2C%20Fortaleza%20-%20Cear%C3%A1!5e0!3m2!1sen!2sbr!4v1710720114873!5m2!1sen!2sbr"
+            width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade=initMap"></iframe>
+            <div id="BtnConhecerMais" onclick="ModalAnuncio()">Adicionar Marcador</div>-->
+        </div>
+        <!--https://cdn.icon-icons.com/icons2/2189/PNG/96/arrow_left_icon_133718.png-->
+    </div>
+        <input type="text" id="address" placeholder="Digite aqui o endereço"><br><br>
+        <button onclick="getStreetInfo()">Localizar Endereço</button><br><br>
+        <button onclick="addPonto()">Adicionar Marcador</button><br><br>
+        <button onclick="limparCampos()" style="margin-bottom: 1rem;">Limpar</button>
+    <div>
+        Endereço:
+        <span id="formattedAddress"></span>
+    </div>
+    <div>
+        Latitude:
+        <span id="latitude"></span>
+    </div>
+    <div>
+        Longitude:
+        <span id="longitude"></span>
+    </div>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDp-RSsLw9pXKlkFQeLXMF0f-x9xBuRYY&libraries=places&callback=initMap">
+    </script>
+    
+    <script>
+
+function addPonto(latitude, longetude, pontos) {
+            var location = document.getElementById("formattedAddress").innerText;
+            var latitude = document.getElementById("latitude").innerText;
+            var longitude = document.getElementById("longitude").innerText;
+            var address = document.getElementById("address").value
+
+            if(address == ''){
+                alert("Ação Inválida! Primeiramente Localize o endereço para prosseguir.")
+            }else{
+            var ponto = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
+            var points = JSON.parse(localStorage.getItem('mapPoints')) || [];
+            points.push(ponto);
+
+            localStorage.setItem('mapPoints', JSON.stringify(points));
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 20,
+                center: ponto
+            });
+
+            points.forEach((value, index, array) => {
+                var marker = new google.maps.Marker({
+                    position: value,
+                    map: map
+                });
+            })
+        }
+    }
+
+        function limparCampos(latitude, longetude, pontos) {
+            document.getElementById("formattedAddress").innerText = '';
+            document.getElementById("latitude").innerText = '';
+            document.getElementById("longitude").innerText = '';
+            localStorage.setItem('mapPoints', []);
+            console.log(localStorage.getItem('mapPoints'));
+        }
+
+        function getStreetInfo() {
+            var address = document.getElementById("address").value;
+            var geocoder = new google.maps.Geocoder();
+
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var formattedAddress = results[0].formatted_address;
+                    var location = results[0].geometry.location;
+                    var latitude = location.lat();
+                    var longitude = location.lng();
+
+                    document.getElementById("formattedAddress").innerText = formattedAddress;
+                    document.getElementById("latitude").innerText = latitude;
+                    document.getElementById("longitude").innerText = longitude;
+                } else {
+                    alert("Ação Inválida! Digite um endereço para prosseguir.");
+                }
+            });
+        }
+        function initMap(lat = -3.793790817260742, lng = -38.60097122192383) {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13, 
+                center: { lat: lat, lng: lng } 
+            });
+
+            localStorage.setItem('mapPoints', JSON.stringify([]));
+
+            // // Get points array from localStorage or initialize as empty array
+            var points = JSON.parse(localStorage.getItem('mapPoints')) || [];
+        }
+
+    </script>
+    
+    <hr>
+    <footer>
+       <h5>Quem Somos:</h5>
+       <p>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> 
+            <h5>Ícones direcionando as redes sociais, aqui</h5> 
+            <h5>&copy; Brito Freitas - Todos os direitos reservados</h5>          
+    </footer>
+    <script src="js.js"></script>
+</body>
+</html>
